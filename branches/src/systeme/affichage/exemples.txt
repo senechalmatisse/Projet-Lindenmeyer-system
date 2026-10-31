@@ -1,0 +1,184 @@
+# Exemples du parcours (UTF-8). Format : blocs séparés par --- ; « clé: valeur » (coupée au premier « : ») ;
+# une ligne qui commence par au moins 2 espaces prolonge la valeur précédente ; les lignes en # sont ignorées.
+# Clés : nom, type (Déterministe, Stochastique, Contextuel), axiome, regles (peut être vide), angle,
+# iterations, longueur, et, facultatives : description, observer, essayer.
+nom: 1. Un carré : l'axiome seul
+type: Déterministe
+axiome: F+F+F+F
+regles:
+angle: 90
+iterations: 0
+longueur: 60
+description: L'axiome est la chaîne de départ. Ici il n'y a aucune règle : la figure est exactement
+  ce que dit l'axiome, lu de gauche à droite. F trace un côté, + tourne à gauche de l'angle.
+observer: Quatre fois (F puis +) : quatre côtés et quatre virages de 90°, soit un tour complet.
+essayer: Angle 60 et axiome F+F+F+F+F+F (hexagone) ; angle 120 et axiome F+F+F (triangle).
+---
+nom: 2. Une règle : la courbe de Koch
+type: Déterministe
+axiome: F
+regles: F=F+F--F+F
+angle: 60
+iterations: 3
+longueur: 6
+description: À chaque itération, tous les F sont remplacés en même temps par le côté droit de la
+  règle. L'itération 0 est l'axiome : un simple segment.
+observer: Le nombre de F est multiplié par 4 à chaque itération (1, 4, 16, 64, 256) ; la chaîne
+  fait 1, 8, 36, 148, 596 symboles.
+essayer: Faire passer les itérations de 0 à 4 avec le curseur ; changer l'angle (60 → 72) : la règle
+  décrit un motif, l'angle fixe la forme.
+---
+nom: 3. Même règle, autre axiome : le flocon de Koch
+type: Déterministe
+axiome: F--F--F
+regles: F=F+F--F+F
+angle: 60
+iterations: 3
+longueur: 6
+description: C'est la règle de l'exemple 2, mais l'axiome est un triangle (F--F--F : trois côtés,
+  virage de 120°). L'axiome fixe la forme d'ensemble, les règles fixent le détail.
+observer: Chaque côté du triangle devient une courbe de Koch ; la figure est fermée et compte
+  3 × 4^n segments (192 pour n = 3).
+essayer: Axiome F-F-F-F-F-F (hexagone) avec la même règle.
+---
+nom: 4. Des symboles qui ne se dessinent pas : le dragon
+type: Déterministe
+axiome: FX
+regles: X=X+YF+ Y=-FX-Y
+angle: 90
+iterations: 10
+longueur: 5
+description: X et Y ne dessinent rien : ce sont des variables qui servent seulement à la
+  réécriture. Seul F trace. Les règles s'appliquent à X et à Y, jamais à F ni aux signes.
+observer: Le nombre de F double à chaque itération (1, 2, 4, 8 … 1024 à l'itération 10), alors que
+  X et Y ne dessinent rien.
+essayer: Regarder la chaîne aux itérations 0 et 1 : « FX » devient « FX+YF+ ».
+---
+nom: 5. Les crochets : une plante
+type: Déterministe
+axiome: F X
+regles: X=F-[[X]+X]+F[+FX]-X F=FF
+angle: 25
+iterations: 5
+longueur: 7
+description: [ mémorise la position et la direction, ] y revient : c'est ce qui crée les branches.
+  F=FF allonge les segments anciens, donc le tronc s'allonge pendant que les pousses restent courtes.
+observer: Chaque [ … ] est une branche qui repart du point où elle a été ouverte.
+essayer: Faire passer les itérations de 1 à 5 ; changer l'angle (25 → 18, puis 35) ; cocher
+  « Épaisseur et couleur » : tronc brun et épais, pousses vertes et fines.
+---
+nom: 6. Le hasard : un arbre stochastique
+type: Stochastique
+axiome: F
+regles: F=F[+F]F[-F]F F=F[+F]F F=F[-F]F
+angle: 25.7
+iterations: 5
+longueur: 7
+description: Trois règles pour le même symbole : à chaque F réécrit, l'une est tirée au sort selon
+  son poids (1 par défaut). Deux tirages donnent deux arbres différents.
+observer: « Nouveau tirage » : l'arbre change à chaque fois. « Générer » garde la graine affichée
+  (même arbre) : la noter pour retrouver un arbre.
+essayer: Donner un poids à la première règle : F(5)=F[+F]F[-F]F (arbre plus touffu).
+---
+nom: 7. Le contexte : la plume à signal
+type: Contextuel
+axiome: SFFFFFFFFFF
+regles: S= T= S<F=F[+FF]T T<F=F[-FF]S
+angle: 30
+iterations: 10
+longueur: 40
+description: Un signal (S ou T) parcourt le tronc. S<F signifie « F, mais seulement s'il est
+  précédé de S » : au passage, le signal fait pousser une branche (à gauche pour S, à droite pour T)
+  puis passe le relais à l'autre.
+observer: Une branche apparaît par itération, alternativement à gauche et à droite.
+essayer: Changer les angles ; observer ce qui se passe quand on supprime la règle T<F.
+---
+nom: 8. 3D : un cube (axiome seul)
+type: Déterministe
+axiome: [&F]F+[&F]F+[&F]F+[&F]F+&f^F+F+F+F+
+regles:
+angle: 90
+iterations: 0
+longueur: 60
+description: & fait piquer le cap vers l'arrière (axe de profondeur), ^ le relève, f avance sans
+  tracer. Les crochets ramènent la tortue au sommet pour tracer l'arête suivante.
+observer: 12 arêtes, 8 sommets. De face, on ne voit qu'un carré : faire tourner la vue.
+essayer: Remplacer l'angle par 45 et observer la déformation.
+---
+nom: 9. 3D : la courbe de Hilbert
+type: Déterministe
+axiome: A
+regles: A=B-F+CFC+F-D&F^D-F+&&CFC+F+B// B=A&F^CFB^F^D^^-F-D^|F^B|FC^F^A// C=|D^|F^B-F+C^F^A&&FA&F^C+F+B^F^D// D=|CFB-F+B|FA&F^A&&FB-F+B|FC//
+angle: 90
+iterations: 3
+longueur: 20
+description: Une courbe qui visite une seule fois chaque case d'une grille 2^n × 2^n × 2^n, sans
+  se croiser. Quatre symboles de réécriture (A, B, C, D), un seul dessine (F).
+observer: 511 segments à l'itération 3 (8^n − 1) ; 4 095 à l'itération 4.
+essayer: Itérations 1, 2, 3 ; au-delà de 6, la chaîne dépasse le plafond de 2 000 000 symboles.
+---
+nom: 10. 3D : un arbre ternaire
+type: Déterministe
+axiome: A
+regles: A=F[&A]////[&A]////[&A] F=FF
+angle: 30
+iterations: 5
+longueur: 8
+description: //// = 4 × 30° = 120° de roulis : trois branches réparties autour du tronc. F=FF
+  allonge les segments anciens, donc les branches basses sont plus longues que les jeunes pousses.
+observer: La figure n'est pas plane : tourner la vue pour voir les trois plans de branches.
+essayer: Angle 25 puis 40 ; remplacer //// par /// (90° de roulis).
+---
+nom: 11. Épaisseur et couleur : ! et '
+type: Déterministe
+axiome: X
+regles: X=F[+!'X][-!'X]!'FX F=FF
+angle: 22.5
+iterations: 6
+longueur: 5
+description: ! multiplie la largeur du trait par 0,7 et ' passe à la couleur suivante (du brun au
+  vert). Comme la position, la largeur et la couleur sont mémorisées par [ et restaurées par ].
+observer: Chaque branche est plus fine et plus verte que celle qui la porte ; la case « Épaisseur
+  et couleur » se coche toute seule, car la chaîne contient ! et '.
+essayer: Retirer les ! (même couleurs, traits égaux) ; décocher la case pour revenir au trait simple.
+---
+nom: 12. Des feuilles : { et }
+type: Déterministe
+axiome: A
+regles: A=[&FL!A]/////'[&FL!A]///////'[&FL!A] F=S/////F S=FL L=['''^^{-f+f+f-|-f+f+f}]
+angle: 22.5
+iterations: 7
+longueur: 10
+description: { ouvre un polygone rempli et } le ferme : entre les deux, chaque f (ou F) ajoute un
+  sommet au lieu de tracer un segment. L dessine une feuille, à l'abri dans ses crochets ; ! affine
+  les branches et ' change leur couleur.
+observer: Un buisson en 3D avec ses feuilles. Choisir la vue « Volumes » : branches en relief,
+  feuilles remplies, éclairage.
+essayer: Exporter en OBJ (menu Fichier) et ouvrir le fichier dans Blender ; itérations 5 à 8.
+---
+nom: 13. Paramétrique : des branches qui raccourcissent
+type: Paramétrique
+axiome: A(1,1)
+regles: A(l,w) = !(w)F(l)[+(30)A(l*0.7,w*0.7)][-(30)A(l*0.7,w*0.7)]
+angle: 30
+iterations: 10
+longueur: 40
+description: Les symboles portent des nombres : A(l,w) est une pousse de longueur l et de largeur w.
+  La règle calcule les nombres du successeur : chaque branche est 0,7 fois plus courte et plus fine
+  que celle qui la porte. F(l) avance de l × longueur, +(30) tourne de 30°, !(w) fixe la largeur.
+observer: La chaîne affiche les paramètres : F(1), puis F(0.7), F(0.49)… Les règles se séparent par
+  « ; » et peuvent contenir des espaces.
+essayer: Remplacer 0.7 par 0.8 ; mettre deux angles différents, +(20) et -(40).
+---
+nom: 14. Paramétrique en 3D : conditions et arbre monopode
+type: Paramétrique
+axiome: A(1,1)
+regles: A(l,w) = !(w)F(l)[&(45)B(l*0.6,w*0.707)]/(137.5)A(l*0.9,w*0.707) ; B(l,w) : l>0.05 = !(w)F(l)[-(45)C(l*0.6,w*0.707)]C(l*0.9,w*0.707) ; C(l,w) : l>0.05 = !(w)F(l)[+(45)B(l*0.6,w*0.707)]B(l*0.9,w*0.707)
+angle: 45
+iterations: 10
+longueur: 40
+description: Un tronc A qui tourne de 137,5° (l'angle d'or) à chaque étage et des branches B et C qui
+  se ramifient à plat. La condition « : l>0.05 » arrête une branche quand elle devient trop courte.
+observer: Tourner la vue : les branches s'étagent en spirale autour du tronc. Les extrémités
+  restent des B et des C non réécrits (condition fausse).
+essayer: Changer 137.5 en 90 ; supprimer les conditions ; la vue « Volumes ».

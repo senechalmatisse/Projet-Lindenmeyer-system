@@ -1,0 +1,10 @@
+# Fichiers compiles (make compiler, make tester, lancer.sh, tester.sh)
+branches/build/
+branches/build-moteur/
+branches/build-tests/
+
+# Javadoc generee (make doc)
+branches/doc/
+
+# SDK JavaFX telecharge (make javafx) ou decompresse a la main
+branches/lib/
